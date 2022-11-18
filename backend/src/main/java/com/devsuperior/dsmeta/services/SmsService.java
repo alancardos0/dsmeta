@@ -10,6 +10,7 @@ import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.type.PhoneNumber;
 
+
 @Service
 public class SmsService {
 
@@ -24,6 +25,9 @@ public class SmsService {
 
 	@Value("${twilio.phone.to}")
 	private String twilioPhoneTo;
+	
+	@Value("${sendgrid.key}")
+	private String sendgridKey;
 	
 	@Autowired
 	private SaleRepository saleRepository;
@@ -44,5 +48,5 @@ public class SmsService {
 		Message message = Message.creator(to, from,msg).create();
 
 		System.out.println(message.getSid());
-	}
+	};
 }

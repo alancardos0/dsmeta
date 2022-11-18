@@ -2,10 +2,15 @@ import NotificationButton from '../Notification-Button'
 import './Sales-Card-style.css'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import axios from 'axios'
 export default function SalesCard() {
   const [minDate, setMinDate] = useState(new Date())
   const [maxDate, setMaxDate] = useState(new Date())
+
+  useEffect(() => {
+    axios.get("http://localhost:8080/sales").then(response => console.log(response)).catch(error => console.error(error))
+  }, [])
 
   return (
     <div className="card">
