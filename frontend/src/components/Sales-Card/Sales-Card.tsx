@@ -10,13 +10,23 @@ import { Sale } from '../../models/sale'
 export default function SalesCard() {
   const [minDate, setMinDate] = useState(new Date())
   const [maxDate, setMaxDate] = useState(new Date())
-
   const [sales, setSales] = useState<Sale[]>([])
-  useEffect(() => {
-    axios.get(`${BASE_URL}/sales`).then(response => setSales(response.data.content)).catch(error => console.error(error))
-  }, [])
 
-  console.log(sales)
+  useEffect(() => {
+    const formatedMinDate = formatDate(minDate)
+    const formatedMaxDate = formatDate(maxDate)
+
+    axios.get(`${BASE_URL}/sales?minDate=${formatedMinDate}&maxDate=${formatedMaxDate}`)
+      .then(response => setSales(response.data.content))
+      .catch(error => console.error(error))
+  }, [minDate, maxDate])
+
+  function formatDate(date: Date) {
+    let formatToDateTime = date.toISOString()
+    const indexToCutDate = formatToDateTime.indexOf("T")
+    return formatToDateTime = formatToDateTime.slice(0, indexToCutDate);
+  }
+
   return (
     <div className="card">
       <h2>Vendas</h2>
