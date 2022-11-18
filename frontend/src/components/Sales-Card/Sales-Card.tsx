@@ -4,14 +4,19 @@ import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import { BASE_URL } from '../../utils/request'
+import { Sale } from '../../models/sale'
+
 export default function SalesCard() {
   const [minDate, setMinDate] = useState(new Date())
   const [maxDate, setMaxDate] = useState(new Date())
 
+  const [sales, setSales] = useState<Sale[]>([])
   useEffect(() => {
-    axios.get("http://localhost:8080/sales").then(response => console.log(response)).catch(error => console.error(error))
+    axios.get(`${BASE_URL}/sales`).then(response => setSales(response.data.content)).catch(error => console.error(error))
   }, [])
 
+  console.log(sales)
   return (
     <div className="card">
       <h2>Vendas</h2>
@@ -46,45 +51,23 @@ export default function SalesCard() {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td className="show992">ID</td>
-              <td className="show576">08/05/2022</td>
-              <td>Anakin</td>
-              <td className="show992">Visitas</td>
-              <td className="show992">Vendas</td>
-              <td>R$ 50000</td>
-              <td>
-                <div className="dsmeta-btn-container">
-                  <NotificationButton />
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td className="show992">ID</td>
-              <td className="show576">08/05/2022</td>
-              <td>Anakin</td>
-              <td className="show992">Visitas</td>
-              <td className="show992">Vendas</td>
-              <td>R$ 50000</td>
-              <td>
-                <div className="dsmeta-btn-container">
-                  <NotificationButton />
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td className="show992">ID</td>
-              <td className="show576">08/05/2022</td>
-              <td>Anakin</td>
-              <td className="show992">Visitas</td>
-              <td className="show992">Vendas</td>
-              <td>R$ 50000</td>
-              <td>
-                <div className="dsmeta-btn-container">
-                  <NotificationButton />
-                </div>
-              </td>
-            </tr>
+            {sales.map(sales => {
+              return (
+                <tr key={sales.id}>
+                  <td className="show992">{sales.id}</td>
+                  <td className="show576">{new Date(sales.date).toLocaleDateString()}</td>
+                  <td>{sales.sellerName}</td>
+                  <td className="show992">{sales.visited}</td>
+                  <td className="show992">{sales.deals}</td>
+                  <td>R$ {sales.amount.toFixed(2)}</td>
+                  <td>
+                    <div className="dsmeta-btn-container">
+                      <NotificationButton />
+                    </div>
+                  </td>
+                </tr>
+              )
+            })}
           </tbody>
         </table>
       </div>
