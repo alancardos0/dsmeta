@@ -25,7 +25,8 @@ export default function SalesCard() {
   }, [minDate, maxDate])
 
   function formatDate(date: Date) {
-    let formatToDateTime = date.toISOString()
+    let hasDate = date == null ? date = new Date() : date;
+    let formatToDateTime = hasDate.toISOString()
     const indexToCutDate = formatToDateTime.indexOf("T")
     return formatToDateTime = formatToDateTime.slice(0, indexToCutDate);
   }
