@@ -7,6 +7,8 @@ import axios from 'axios'
 import { BASE_URL } from '../../utils/request'
 import { Sale } from '../../models/sale'
 
+
+
 export default function SalesCard() {
   const [minDate, setMinDate] = useState(new Date())
   const [maxDate, setMaxDate] = useState(new Date())
@@ -26,7 +28,6 @@ export default function SalesCard() {
     const indexToCutDate = formatToDateTime.indexOf("T")
     return formatToDateTime = formatToDateTime.slice(0, indexToCutDate);
   }
-
   return (
     <div className="card">
       <h2>Vendas</h2>
@@ -72,7 +73,7 @@ export default function SalesCard() {
                   <td>R$ {sales.amount.toFixed(2)}</td>
                   <td>
                     <div className="dsmeta-btn-container">
-                      <NotificationButton />
+                      <NotificationButton saleId={sales.id} />
                     </div>
                   </td>
                 </tr>
